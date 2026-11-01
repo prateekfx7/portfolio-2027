@@ -423,7 +423,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 8. Booking & CTA Link Routing
+  // 8. Work Cards Link Navigation
+  // =========================================================================
+  const workReels = {
+    'the cyberunbound network': 'https://www.instagram.com/reel/DeeT0jZorVb/',
+    'intro video for fizinga': 'https://www.instagram.com/reel/DasE5izsEzZ/',
+    'fizinga website launch': 'https://www.instagram.com/reel/DbNwjm8Mb9J/',
+    'cybesecurity ctf event promo': 'https://www.instagram.com/reel/DcI8T6fK7yP/'
+  };
+
+  document.querySelectorAll('.work-card-anchor, .framer-hxYcN.framer-moxbx3').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e) => {
+      // Find destination url from anchor href, data-href, or title match
+      let url = card.getAttribute('href') || card.dataset.href;
+      if (!url) {
+        const titleEl = card.querySelector('.framer-11uonim p');
+        const titleText = titleEl ? titleEl.textContent.trim().toLowerCase() : '';
+        for (const [key, val] of Object.entries(workReels)) {
+          if (titleText.includes(key)) {
+            url = val;
+            break;
+          }
+        }
+      }
+      if (url && e.target.tagName !== 'A') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    });
+  });
+
+  // =========================================================================
+  // 9. Booking & CTA Link Routing
   // =========================================================================
   const bookingUrl = 'https://calendly.com/prateekmaurya862/30min';
   document.querySelectorAll('a').forEach(link => {

@@ -162,18 +162,29 @@ body {
   visibility: visible !important;
 }
 
+.work-card-anchor {
+  display: block !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: pointer !important;
+}
+
 .framer-hxYcN.framer-moxbx3 {
   overflow: hidden !important;
   position: relative !important;
   border-radius: 14px !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: #09090b !important;
+  cursor: pointer !important;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease !important;
 }
 
-.framer-hxYcN.framer-moxbx3:hover {
+.framer-hxYcN.framer-moxbx3:hover,
+.work-card-anchor:hover .framer-hxYcN.framer-moxbx3 {
   transform: translateY(-5px) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
 }
 
@@ -185,30 +196,39 @@ body {
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(5,5,5,0.85) 60%, rgba(5,5,5,0.98) 100%) !important;
 }
 
+.framer-hxYcN .framer-1b519hk,
 .framer-1b519hk {
   position: relative !important;
   z-index: 11 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 14px !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  width: 100% !important;
 }
 
 .framer-11uonim p {
   color: #ffffff !important;
-  font-size: 22px !important;
+  font-size: 24px !important;
   font-weight: 600 !important;
   margin: 0 !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: -0.02em !important;
+  text-transform: capitalize !important;
   text-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
 }
 
-/* Video Stats Pills Container */
+/* Video Stats Pills Container - HORIZONTAL ROW, NEVER WRAPPING */
+.framer-hxYcN .framer-ye3ewf,
 .framer-ye3ewf {
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap !important;
+  flex-wrap: nowrap !important;
   align-items: center !important;
+  justify-content: flex-start !important;
   gap: 10px !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  height: auto !important;
   z-index: 12 !important;
   position: relative !important;
   visibility: visible !important;
@@ -218,8 +238,10 @@ body {
 .framer-1t9wo8l-container,
 .framer-qdoyup-container {
   display: inline-flex !important;
-  height: 34px !important;
+  height: 33px !important;
   width: auto !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
   visibility: visible !important;
   opacity: 1 !important;
 }
@@ -227,16 +249,25 @@ body {
 .framer-lEm09.framer-15wkwn {
   display: inline-flex !important;
   align-items: center !important;
-  height: 34px !important;
+  height: 33px !important;
   padding: 0 14px !important;
   border-radius: 999px !important;
-  background: rgba(20, 20, 24, 0.75) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
   visibility: visible !important;
   opacity: 1 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+}
+
+.framer-hxYcN.framer-moxbx3:hover .framer-lEm09.framer-15wkwn,
+.work-card-anchor:hover .framer-lEm09.framer-15wkwn {
+  background: rgba(255, 255, 255, 0.13) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
 }
 
 .framer-lEm09 svg {
@@ -264,7 +295,8 @@ body {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
 }
 
-.framer-hxYcN.framer-moxbx3:hover .framer-1xuqz7w {
+.framer-hxYcN.framer-moxbx3:hover .framer-1xuqz7w,
+.work-card-anchor:hover .framer-1xuqz7w {
   opacity: 1 !important;
   transform: translate(-50%, -50%) scale(1.1) !important;
 }
