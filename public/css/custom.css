@@ -157,9 +157,28 @@ body {
 .framer-469hlb-container,
 .framer-njv0rq-container,
 .framer-6h1vlt-container,
-.framer-1orzkyl-container {
+.framer-1orzkyl-container,
+.framer-work-card-5-container {
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+.framer-work-card-5-container {
+  flex: 1 0 0 !important;
+  width: 100% !important;
+  height: 627px !important;
+  position: relative !important;
+}
+
+.framer-row-3 {
+  width: 100% !important;
+  margin-top: 10px !important;
+}
+
+@media (max-width: 809.98px) {
+  .framer-work-card-5-container {
+    height: 480px !important;
+  }
 }
 
 .work-card-anchor {

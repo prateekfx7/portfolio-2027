@@ -429,7 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'the cyberunbound network': 'https://www.instagram.com/reel/DeeT0jZorVb/',
     'intro video for fizinga': 'https://www.instagram.com/reel/DasE5izsEzZ/',
     'fizinga website launch': 'https://www.instagram.com/reel/DbNwjm8Mb9J/',
-    'cybesecurity ctf event promo': 'https://www.instagram.com/reel/DcI8T6fK7yP/'
+    'cybesecurity ctf event promo': 'https://www.instagram.com/reel/DcI8T6fK7yP/',
+    'demo video for cyberunbound yc startup': 'https://www.instagram.com/p/DeeT0jZorVb/'
   };
 
   document.querySelectorAll('.work-card-anchor, .framer-hxYcN.framer-moxbx3').forEach(card => {
