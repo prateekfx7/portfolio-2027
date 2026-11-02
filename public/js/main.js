@@ -474,6 +474,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // =========================================================================
+  // 10. Footer Contact Links (Email & Phone)
+  // =========================================================================
+  document.querySelectorAll('a.framer-wMyS3').forEach(link => {
+    const rawText = link.textContent.trim();
+    if (rawText.includes('@')) {
+      link.href = `mailto:${rawText}`;
+      link.setAttribute('aria-label', `Send email to ${rawText}`);
+    } else if (rawText.replace(/\D/g, '').length >= 10) {
+      const cleanDigits = rawText.replace(/\D/g, '');
+      link.href = `tel:+91${cleanDigits.slice(-10)}`;
+      link.setAttribute('aria-label', `Call +91 ${cleanDigits.slice(-10)}`);
+    }
+  });
+
   // Smooth scroll for internal hashes with Lenis support
   document.querySelectorAll('a[href^="#"], a[href^="./#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
