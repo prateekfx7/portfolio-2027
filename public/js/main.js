@@ -119,6 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateShowreelTilt = () => {
     if (!showreelContainer) return;
+    if (window.innerWidth <= 809) {
+      showreelContainer.style.transform = 'none';
+      showreelContainer.style.opacity = '1';
+      return;
+    }
     const rect = showreelContainer.getBoundingClientRect();
     const windowH = window.innerHeight;
 
@@ -151,10 +156,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (showreelCard) {
     const video = showreelCard.querySelector('video');
-    const overlay = showreelCard.querySelector('.showreel-overlay, .framer-1l0t004');
 
-    // 3D Perspective Tilt on Mouse Movement
+    // Autoplay hero showreel muted by default
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
+
+    // 3D Perspective Tilt on Mouse Movement (Desktop only)
     showreelCard.addEventListener('mousemove', (e) => {
+      if (window.innerWidth <= 809) return;
       const rect = showreelCard.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -162,36 +173,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     showreelCard.addEventListener('mouseleave', () => {
-      showreelCard.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
-    });
-
-    // Click to Play/Pause with Sound
-    showreelCard.addEventListener('click', () => {
-      if (!video) return;
-      if (video.paused) {
-        video.muted = false;
-        video.play().then(() => {
-          showreelCard.classList.add('is-playing');
-          if (overlay) overlay.style.display = 'none';
-        }).catch(() => {
-          video.muted = true;
-          video.play();
-          showreelCard.classList.add('is-playing');
-          if (overlay) overlay.style.display = 'none';
-        });
+      if (window.innerWidth <= 809) {
+        showreelCard.style.transform = 'none';
       } else {
-        video.pause();
-        showreelCard.classList.remove('is-playing');
-        if (overlay) overlay.style.display = 'flex';
+        showreelCard.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
       }
     });
 
-    if (video) {
-      video.addEventListener('ended', () => {
-        showreelCard.classList.remove('is-playing');
-        if (overlay) overlay.style.display = 'flex';
-      });
-    }
+    // Click to Toggle Audio / Play-Pause
+    showreelCard.addEventListener('click', () => {
+      if (!video) return;
+      if (video.paused) {
+        video.play().catch(() => {});
+      } else {
+        video.muted = !video.muted;
+      }
+    });
   }
 
   // =========================================================================
