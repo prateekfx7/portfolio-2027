@@ -559,162 +559,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // 9. High-Ticket VIP Qualification Modal System & Booking
+  // 9. Booking & CTA Link Routing
   // =========================================================================
-  const vipModal = document.getElementById('vip-qualification-modal');
-  const vipCloseBtn = document.getElementById('vip-modal-close');
-  const vipForm = document.getElementById('vip-qualification-form');
-  const vipSuccess = document.getElementById('vip-modal-success');
-  const vipManualCalBtn = document.getElementById('vip-manual-cal-btn');
-
-  const openVipModal = (preselectedBudget) => {
-    if (!vipModal) return;
-    vipModal.classList.add('is-open');
-    vipModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-
-    // If preselected budget tier specified, activate its button
-    if (preselectedBudget) {
-      const budgetBtns = vipModal.querySelectorAll('.vip-budget-btn');
-      budgetBtns.forEach(btn => {
-        if (btn.dataset.val === preselectedBudget) {
-          btn.classList.add('is-selected');
-          const hiddenInput = document.getElementById('vip-budget-tier');
-          if (hiddenInput) hiddenInput.value = preselectedBudget;
-        } else {
-          btn.classList.remove('is-selected');
-        }
-      });
-    }
-
-    // Focus first input after slight delay for smooth transition
-    setTimeout(() => {
-      const firstInput = document.getElementById('vip-name');
-      if (firstInput) firstInput.focus();
-    }, 150);
-  };
-
-  const closeVipModal = () => {
-    if (!vipModal) return;
-    vipModal.classList.remove('is-open');
-    vipModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  };
-
-  // Wire all booking CTAs ("Book a call", "Apply for Retainer", etc.) to VIP modal
-  document.querySelectorAll('a, button').forEach(el => {
-    const text = el.textContent.trim().toLowerCase();
-    const href = el.getAttribute('href') || '';
+  const bookingUrl = 'https://calendly.com/prateekmaurya862/30min';
+  document.querySelectorAll('a').forEach(link => {
+    const text = link.textContent.trim().toLowerCase();
     if (
-      href.includes('calendly.com') ||
       text.includes('book a call') ||
-      text.includes('apply for retainer') ||
-      text.includes('apply for launch film') ||
-      text.includes('apply for project') ||
       text.includes('start your project') ||
-      text.includes('work with me') ||
-      el.dataset.openVipModal === 'true'
+      text.includes('get started') ||
+      text.includes('work with me')
     ) {
-      el.addEventListener('click', (e) => {
-        if (el.id === 'vip-manual-cal-btn') return;
-        e.preventDefault();
-
-        let budgetTier = null;
-        if (text.includes('5,500') || text.includes('flagship')) {
-          budgetTier = '$5,000 – $10,000 / mo';
-        } else if (text.includes('7,500') || text.includes('launch film')) {
-          budgetTier = '$10,000+ / Custom Launch Film';
-        } else if (text.includes('3,000') || text.includes('growth')) {
-          budgetTier = '$3,000 – $5,000 / mo';
-        }
-
-        openVipModal(budgetTier);
-      });
+      if (link.getAttribute('href') === './' || link.getAttribute('href') === '/' || link.getAttribute('href')?.includes('cal.com')) {
+        link.href = bookingUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
     }
   });
-
-  if (vipModal) {
-    // Close button click
-    if (vipCloseBtn) {
-      vipCloseBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeVipModal();
-      });
-    }
-
-    // Backdrop click outside container
-    vipModal.addEventListener('click', (e) => {
-      if (e.target === vipModal) {
-        closeVipModal();
-      }
-    });
-
-    // Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && vipModal.classList.contains('is-open')) {
-        closeVipModal();
-      }
-    });
-
-    // Chip selectors (Client type & Project scope)
-    vipModal.querySelectorAll('.vip-chip-grid').forEach(grid => {
-      const fieldName = grid.dataset.name;
-      const hiddenInput = document.getElementById(`vip-${fieldName.replace('_', '-')}`);
-      grid.querySelectorAll('.vip-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-          grid.querySelectorAll('.vip-chip').forEach(c => c.classList.remove('is-selected'));
-          chip.classList.add('is-selected');
-          if (hiddenInput) {
-            hiddenInput.value = chip.dataset.val;
-          }
-        });
-      });
-    });
-
-    // Budget selector buttons
-    const budgetSelector = vipModal.querySelector('.vip-budget-selector');
-    const budgetInput = document.getElementById('vip-budget-tier');
-    if (budgetSelector && budgetInput) {
-      budgetSelector.querySelectorAll('.vip-budget-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          budgetSelector.querySelectorAll('.vip-budget-btn').forEach(b => b.classList.remove('is-selected'));
-          btn.classList.add('is-selected');
-          budgetInput.value = btn.dataset.val;
-        });
-      });
-    }
-
-    // Form submit -> pre-fill Calendly URL & transition
-    if (vipForm) {
-      vipForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('vip-name')?.value.trim() || '';
-        const email = document.getElementById('vip-email')?.value.trim() || '';
-        const website = document.getElementById('vip-website')?.value.trim() || '';
-        const clientType = document.getElementById('vip-client-type')?.value || 'Tech Founder';
-        const projectScope = document.getElementById('vip-project-scope')?.value || 'Retainer';
-        const budgetTier = document.getElementById('vip-budget-tier')?.value || '$3,000 – $5,000 / mo';
-
-        const notes = `[Type: ${clientType}] [Scope: ${projectScope}] [Budget: ${budgetTier}]${website ? ' [URL: ' + website + ']' : ''}`;
-        const calendlyUrl = `https://calendly.com/prateekmaurya862/30min?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&a1=${encodeURIComponent(notes)}`;
-
-        if (vipManualCalBtn) {
-          vipManualCalBtn.href = calendlyUrl;
-        }
-
-        // Show success state
-        vipForm.style.display = 'none';
-        if (vipSuccess) {
-          vipSuccess.style.display = 'block';
-        }
-
-        // Open Calendly in 1.8 seconds
-        setTimeout(() => {
-          window.open(calendlyUrl, '_blank', 'noopener,noreferrer');
-        }, 1800);
-      });
-    }
-  }
 
   // =========================================================================
   // 10. Footer Contact Links (Email & Phone)
