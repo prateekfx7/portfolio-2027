@@ -214,6 +214,7 @@ body {
   width: 100% !important;
   height: 100% !important;
   cursor: pointer !important;
+  position: relative !important;
 }
 
 .framer-hxYcN.framer-moxbx3 {
@@ -340,6 +341,83 @@ body {
 .framer-1n34uqk,
 .showreel-overlay {
   display: none !important;
+}
+
+/* --- Hover to Sound Indicator Badge --- */
+.sound-hover-pill {
+  position: absolute !important;
+  top: 18px !important;
+  right: 18px !important;
+  z-index: 25 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  background: rgba(10, 10, 10, 0.75) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+  opacity: 0 !important;
+  transform: translateY(-4px) !important;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.has-sound .sound-hover-pill,
+.work-card-anchor:hover .sound-hover-pill,
+.framer-1do01so:hover .sound-hover-pill,
+.thR3d7lalp-plate:hover .sound-hover-pill {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.sound-hover-text {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: #ffffff !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+}
+
+.sound-wave-icon {
+  width: 14px !important;
+  height: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 2.5px !important;
+}
+
+.sound-wave-bar {
+  width: 2.5px !important;
+  height: 12px !important;
+  background-color: #ffffff !important;
+  border-radius: 2px !important;
+  transform-origin: bottom !important;
+  transform: scaleY(0.35);
+}
+
+.has-sound .sound-wave-bar:nth-child(1) {
+  animation: soundWaveBounce 0.65s ease-in-out infinite alternate !important;
+  animation-delay: 0.05s !important;
+}
+.has-sound .sound-wave-bar:nth-child(2) {
+  animation: soundWaveBounce 0.65s ease-in-out infinite alternate !important;
+  animation-delay: 0.22s !important;
+}
+.has-sound .sound-wave-bar:nth-child(3) {
+  animation: soundWaveBounce 0.65s ease-in-out infinite alternate !important;
+  animation-delay: 0.38s !important;
+}
+
+@keyframes soundWaveBounce {
+  0% { transform: scaleY(0.25); }
+  100% { transform: scaleY(1); }
 }
 
 /* --- Hero Showreel 3D Card & Scroll Reveal --- */

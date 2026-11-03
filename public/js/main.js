@@ -112,6 +112,97 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
+  // Unified Hover-to-Sound Controller for All Videos
+  // =========================================================================
+  let userHasInteracted = false;
+  const registerUserInteraction = () => {
+    userHasInteracted = true;
+    ['pointerdown', 'click', 'touchstart', 'keydown'].forEach(ev => {
+      window.removeEventListener(ev, registerUserInteraction);
+    });
+  };
+  ['pointerdown', 'click', 'touchstart', 'keydown'].forEach(ev => {
+    window.addEventListener(ev, registerUserInteraction, { passive: true });
+  });
+
+  let currentSoundVideo = null;
+
+  const playVideoSound = (video, container) => {
+    if (!video) return;
+
+    // Silence any other video
+    if (currentSoundVideo && currentSoundVideo !== video) {
+      currentSoundVideo.muted = true;
+      const prevCard = currentSoundVideo.closest('.work-card-anchor, .framer-hxYcN, .framer-1do01so, .thR3d7lalp-plate');
+      if (prevCard) prevCard.classList.remove('has-sound');
+    }
+
+    currentSoundVideo = video;
+    video.muted = false;
+    video.volume = 1.0;
+    if (container) container.classList.add('has-sound');
+
+    const promise = video.play();
+    if (promise !== undefined) {
+      promise.catch(() => {
+        // Autoplay policy prevented unmuted playback without prior user interaction
+        if (!userHasInteracted) {
+          const unlockOnNextGesture = () => {
+            if (currentSoundVideo === video && (container?.matches(':hover') || video.matches(':hover'))) {
+              video.muted = false;
+              video.volume = 1.0;
+              video.play().catch(() => {});
+              if (container) container.classList.add('has-sound');
+            }
+          };
+          ['pointerdown', 'click', 'touchstart'].forEach(ev => {
+            window.addEventListener(ev, unlockOnNextGesture, { once: true, passive: true });
+          });
+        }
+      });
+    }
+  };
+
+  const muteVideoSound = (video, container) => {
+    if (!video) return;
+    video.muted = true;
+    if (container) container.classList.remove('has-sound');
+    if (currentSoundVideo === video) {
+      currentSoundVideo = null;
+    }
+  };
+
+  const setupHoverSound = (container, videoSelector = 'video') => {
+    if (!container) return;
+    const video = container.querySelector(videoSelector);
+    if (!video) return;
+
+    // Append subtle sound indicator pill if not already present
+    if (!container.querySelector('.sound-hover-pill')) {
+      const pill = document.createElement('div');
+      pill.className = 'sound-hover-pill';
+      pill.setAttribute('aria-hidden', 'true');
+      pill.innerHTML = `
+        <span class="sound-wave-icon">
+          <span class="sound-wave-bar"></span>
+          <span class="sound-wave-bar"></span>
+          <span class="sound-wave-bar"></span>
+        </span>
+        <span class="sound-hover-text">Sound</span>
+      `;
+      container.appendChild(pill);
+    }
+
+    container.addEventListener('mouseenter', () => {
+      playVideoSound(video, container);
+    });
+
+    container.addEventListener('mouseleave', () => {
+      muteVideoSound(video, container);
+    });
+  };
+
+  // =========================================================================
   // 3. Hero Showreel Player with 3D Reveal & Interactive Tilt
   // =========================================================================
   const showreelContainer = document.querySelector('.showreel-3d-reveal');
@@ -163,6 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
       video.play().catch(() => {});
     }
 
+    // Hover to play sound
+    setupHoverSound(showreelCard, 'video');
+
     // 3D Perspective Tilt on Mouse Movement (Desktop only)
     showreelCard.addEventListener('mousemove', (e) => {
       if (window.innerWidth <= 809) return;
@@ -185,8 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!video) return;
       if (video.paused) {
         video.play().catch(() => {});
+      }
+      if (video.muted) {
+        playVideoSound(video, showreelCard);
       } else {
-        video.muted = !video.muted;
+        muteVideoSound(video, showreelCard);
       }
     });
   }
@@ -291,13 +388,18 @@ document.addEventListener('DOMContentLoaded', () => {
       stage.addEventListener('mouseenter', () => { isHovered = true; });
       stage.addEventListener('mouseleave', () => { isHovered = false; });
 
+      // Enable hover to sound on carousel cards
+      plates.forEach(plate => {
+        setupHoverSound(plate, 'video');
+      });
+
       // Start 3D animation loop
       requestAnimationFrame(updateLayout);
     }
   }
 
   // =========================================================================
-  // 5. Showcase Videos Autoplay & Viewport Loop
+  // 5. Showcase Videos Autoplay, Viewport Loop & Hover-to-Sound
   // =========================================================================
   const allVideos = document.querySelectorAll('video');
   if ('IntersectionObserver' in window) {
@@ -323,6 +425,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Set up Hover-to-Sound on all Selected Work cards
+  document.querySelectorAll('.work-card-anchor').forEach(card => {
+    setupHoverSound(card, 'video');
+  });
 
   // =========================================================================
   // 5b. Animated Lottie Icons for Services Cards & Deliverables Marquee
